@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAirState : PlayerState
 {
-    public PlayerAirState(Player _player, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _playerSM, _animBoolName)
+    public PlayerAirState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
     {
     }
 
@@ -28,7 +28,7 @@ public class PlayerAirState : PlayerState
         if (player.isGroundDetected())
             playerSM.ChangeState(player.idleState);
 
-        if (xInput != 0)
-            player.SetVelocity(player.moveSpeed * 0.8f * xInput, rb.velocity.y);
+        if (/*xInput*/ inputManager.GetMovingReading().x != 0)
+            player.SetVelocity(player.moveSpeed * 0.8f * /*xInput*/ inputManager.GetMovingReading().x, rb.velocity.y);
     }
 }

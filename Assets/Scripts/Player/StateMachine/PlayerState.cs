@@ -5,20 +5,23 @@ using UnityEngine;
 public class PlayerState
 {
     protected PlayerStateMachine playerSM;
+    protected InputManager inputManager;
+    protected InputEventHandler inputEventHandler;
     protected Player player;
 
     protected Rigidbody2D rb;
 
-    protected float xInput;
-    protected float yInput;
+    //protected float xInput;
+    //protected float yInput;
     private string animBoolName;
 
     protected float stateTimer;
     protected bool triggerCalled;
 
-    public PlayerState(Player _player, PlayerStateMachine _playerSM, string _animBoolName)
+    public PlayerState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName)
     {
         this.player = _player;
+        this.inputManager = _inputManager;
         this.playerSM = _playerSM;
         this.animBoolName = _animBoolName;
     }
@@ -33,8 +36,8 @@ public class PlayerState
     {
         stateTimer -= Time.deltaTime;
 
-        xInput = Input.GetAxisRaw("Horizontal");
-        yInput = Input.GetAxisRaw("Vertical");
+        //xInput = Input.GetAxisRaw("Horizontal");
+        //yInput = Input.GetAxisRaw("Vertical");
         player.anim.SetFloat("yVelocity", rb.velocity.y);
     }
     public virtual void Exit()

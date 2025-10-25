@@ -5,6 +5,7 @@ using System;
 
 public class Player : Entity
 {
+    private InputManager inputManager;
     public bool isBusy { get; private set; }
 
     [Header("Attack info")]
@@ -39,15 +40,16 @@ public class Player : Entity
 
         #region States
         stateMachine = new PlayerStateMachine();
+        inputManager = GetComponent<InputManager>();
 
-        idleState = new PlayerIdleState(this, stateMachine, "Idle");
-        moveState = new PlayerMoveState(this, stateMachine, "Move");
-        jumpState = new PlayerJumpState(this, stateMachine, "Jump");
-        airState = new PlayerAirState(this, stateMachine, "Jump");
-        dashState = new PlayerDashState(this, stateMachine, "Dash");
-        slideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
-        wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
-        ATK1State = new PlayerATK1State(this, stateMachine, "Attack");
+        idleState = new PlayerIdleState(this, inputManager, stateMachine, "Idle");
+        moveState = new PlayerMoveState(this, inputManager, stateMachine, "Move");
+        jumpState = new PlayerJumpState(this, inputManager, stateMachine, "Jump");
+        airState = new PlayerAirState(this, inputManager, stateMachine, "Jump");
+        dashState = new PlayerDashState(this, inputManager, stateMachine, "Dash");
+        slideState = new PlayerWallSlideState(this, inputManager, stateMachine, "WallSlide");
+        wallJumpState = new PlayerWallJumpState(this, inputManager, stateMachine, "Jump");
+        ATK1State = new PlayerATK1State(this, inputManager, stateMachine, "Attack");
         #endregion
     }
 
@@ -84,11 +86,11 @@ public class Player : Entity
 
         dashCooldownTime -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTime < 0)
+        if (/*Input.GetKeyDown(KeyCode.LeftShift)*/ inputManager.dash.IsPressed() && dashCooldownTime < 0)
         {
             dashCooldownTime = dashCooldown;
-
-            dashDir = Input.GetAxisRaw("Horizontal");
+            
+            dashDir = /*Input.GetAxisRaw("Horizontal")*/ inputManager.GetMovingReading().x;
 
             if (dashDir == 0)
                 dashDir = facingDir;

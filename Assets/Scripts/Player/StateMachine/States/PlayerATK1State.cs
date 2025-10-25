@@ -9,7 +9,7 @@ public class PlayerATK1State : PlayerState
     private float lastTimeAttacked;
     private float comboWindow = 2;
 
-    public PlayerATK1State(Player _player, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _playerSM, _animBoolName)
+    public PlayerATK1State(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
     {
     }
 
@@ -24,8 +24,8 @@ public class PlayerATK1State : PlayerState
 
         float atkDir = player.facingDir;
 
-        if (xInput != 0)
-            atkDir = xInput;
+        if (/*xInput*/ inputManager.GetMovingReading().x != 0)
+            atkDir = /*xInput*/ inputManager.GetMovingReading().x;
 
         player.SetVelocity(player.attackMovement[comboCounter].x * atkDir, player.attackMovement[comboCounter].y);
 

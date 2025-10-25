@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerGroundState
 {
-    public PlayerIdleState(Player _player, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _playerSM, _animBoolName)
+    public PlayerIdleState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
     {
     }
 
@@ -24,10 +24,10 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.Update();
 
-        if (xInput == player.facingDir && player.isWallDetected())
+        if (/*xInput*/ inputManager.GetMovingReading().x == player.facingDir && player.isWallDetected())
             return;
 
-        if (xInput != 0 && !player.isBusy)
+        if (/*xInput*/ inputManager.GetMovingReading().x != 0 && !player.isBusy)
             playerSM.ChangeState(player.moveState);
     }
 }

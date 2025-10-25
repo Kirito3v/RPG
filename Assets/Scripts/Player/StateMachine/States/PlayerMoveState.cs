@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundState
 {
-    public PlayerMoveState(Player _player, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _playerSM, _animBoolName)
+    public PlayerMoveState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
     {
     }
 
@@ -22,9 +22,9 @@ public class PlayerMoveState : PlayerGroundState
     {
         base.Update();
 
-        player.SetVelocity(xInput * player.moveSpeed, rb.velocity.y);
+        player.SetVelocity(/*xInput*/ inputManager.GetMovingReading().x * player.moveSpeed, rb.velocity.y);
 
-        if (xInput == 0 || player.isWallDetected())
+        if (/*xInput*/ inputManager.GetMovingReading().x == 0 || player.isWallDetected())
             playerSM.ChangeState(player.idleState);
     }
 }
