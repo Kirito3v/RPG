@@ -1,14 +1,14 @@
-# RPG
- 2D platformer
+# RPG  
+2D platformer
 
-I try to code some common systems for any rpg games
+I try to code some common systems for any RPG games.
 
-Done
-player controller(state machine with new input system and unitask)
+**Done**
+- Player controller (state machine with new input system and Unitask)
 
-yet to come
-inventory
-dialog
-enemy AI
-stats
-skill tree
+**Yet to come**
+- Inventory  
+- Dialog  
+- Enemy AI  
+- Stats  
+- Skill tree
