@@ -11,24 +11,24 @@ public class PlayerWallSlideState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //inputManager.RegisterToJump(inputEventHandler.wallslidejump);
+        inputManager.RegisterToJump(inputManager.wallSlideJump);
     }
 
     public override void Exit()
     {
         base.Exit();
-        //inputManager.UnRegisterToJump(inputEventHandler.wallslidejump);
+        inputManager.UnRegisterToJump(inputManager.wallSlideJump);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (/*Input.GetKeyDown(KeyCode.Space)*/ inputManager.jump.WasPressedThisFrame())
-        {
-            playerSM.ChangeState(player.wallJumpState);
-            return;
-        }
+        //if (/*Input.GetKeyDown(KeyCode.Space)*/ inputManager.jump.WasPressedThisFrame())
+        //{
+        //    playerSM.ChangeState(player.wallJumpState);
+        //    return;
+        //}
 
         if (/*yInput*/ inputManager.GetMovingReading().y < 0)
             rb.velocity = new Vector2(0, rb.velocity.y);

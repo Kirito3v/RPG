@@ -11,19 +11,23 @@ public class PlayerGroundState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        inputManager.RegisterToAttack(inputManager.groundAttack);
+        //inputManager.RegisterToJump(inputManager.groundJump);
     }
 
     public override void Exit()
     {
         base.Exit();
+        inputManager.UnRegisterToAttack(inputManager.groundAttack);
+        //inputManager.UnRegisterToJump(inputManager.groundJump);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (/*Input.GetKeyDown(KeyCode.L)*/ inputManager.attack.WasPressedThisFrame())
-            playerSM.ChangeState(player.ATK1State);
+        //if (/*Input.GetKeyDown(KeyCode.L)*/ inputManager.attack.WasPressedThisFrame())
+        //    playerSM.ChangeState(player.ATK1State);
 
         if (!player.isGroundDetected())
             playerSM.ChangeState(player.airState);

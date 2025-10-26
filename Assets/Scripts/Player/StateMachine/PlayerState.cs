@@ -6,7 +6,6 @@ public class PlayerState
 {
     protected PlayerStateMachine playerSM;
     protected InputManager inputManager;
-    protected InputEventHandler inputEventHandler;
     protected Player player;
 
     protected Rigidbody2D rb;
