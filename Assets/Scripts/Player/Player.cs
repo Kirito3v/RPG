@@ -53,7 +53,6 @@ public class Player : Entity
         #endregion
     }
 
-
     protected override void Start()
     {
         base.Start();

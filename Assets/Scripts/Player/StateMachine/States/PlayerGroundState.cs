@@ -12,14 +12,14 @@ public class PlayerGroundState : PlayerState
     {
         base.Enter();
         inputManager.RegisterToAttack(inputManager.groundAttack);
-        //inputManager.RegisterToJump(inputManager.groundJump);
+        inputManager.RegisterToJump(inputManager.groundJump);
     }
 
     public override void Exit()
     {
         base.Exit();
         inputManager.UnRegisterToAttack(inputManager.groundAttack);
-        //inputManager.UnRegisterToJump(inputManager.groundJump);
+        inputManager.UnRegisterToJump(inputManager.groundJump);
     }
 
     public override void Update()
@@ -32,7 +32,7 @@ public class PlayerGroundState : PlayerState
         if (!player.isGroundDetected())
             playerSM.ChangeState(player.airState);
 
-        if (/*Input.GetKeyDown(KeyCode.Space)*/ inputManager.jump.WasPressedThisFrame() && player.isGroundDetected())
-            playerSM.ChangeState(player.jumpState);
+        //if (/*Input.GetKeyDown(KeyCode.Space)*/ inputManager.jump.WasPressedThisFrame() && player.isGroundDetected())
+        //    playerSM.ChangeState(player.jumpState);
     }
 }

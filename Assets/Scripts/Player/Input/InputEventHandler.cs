@@ -20,7 +20,11 @@ public class InputEventHandler : MonoBehaviour
 
     public void groundAttack(InputAction.CallbackContext context) => player.stateMachine.ChangeState(player.ATK1State);
 
-    public void groundJump(InputAction.CallbackContext context) => player.stateMachine.ChangeState(player.jumpState);
+    public void groundJump(InputAction.CallbackContext context)
+    {
+        if (player.isGroundDetected())
+            player.stateMachine.ChangeState(player.jumpState);
+    }
 
     //public void Dash(InputAction.CallbackContext context) => player.Dash();
 }

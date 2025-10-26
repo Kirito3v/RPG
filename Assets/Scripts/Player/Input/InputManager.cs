@@ -46,8 +46,8 @@ public class InputManager : InputEventHandler
     public void RegisterToAttack(Action<InputAction.CallbackContext> action) => attack.performed += action;
     public void UnRegisterToAttack(Action<InputAction.CallbackContext> action) => attack.performed -= action;
 
-    public void RegisterToDash(Action<InputAction.CallbackContext> action) => attack.performed += action;
-    public void UnRegisterToDash(Action<InputAction.CallbackContext> action) => attack.performed -= action;
+    public void RegisterToDash(Action<InputAction.CallbackContext> action) => dash.performed += action;
+    public void UnRegisterToDash(Action<InputAction.CallbackContext> action) => dash.performed -= action;
     #endregion
 
     public Vector2 GetMovingReading() => move.ReadValue<Vector2>();
