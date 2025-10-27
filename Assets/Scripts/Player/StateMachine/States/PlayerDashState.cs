@@ -20,6 +20,7 @@ public class PlayerDashState : PlayerState
         base.Exit();
 
         player.SetVelocity(0, rb.velocity.y);
+        inputManager.UnRegisterToDash(inputManager.Dash);
     }
 
     public override void Update()

@@ -26,5 +26,5 @@ public class InputEventHandler : MonoBehaviour
             player.stateMachine.ChangeState(player.jumpState);
     }
 
-    //public void Dash(InputAction.CallbackContext context) => player.Dash();
+    public void Dash(InputAction.CallbackContext context) => player.Dash();
 }

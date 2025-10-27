@@ -30,6 +30,8 @@ public class PlayerState
         player.anim.SetBool(animBoolName, true);
         rb = player.rb;
         triggerCalled = false;
+
+        inputManager.RegisterToDash(inputManager.Dash);
     }
     public virtual void Update()
     {

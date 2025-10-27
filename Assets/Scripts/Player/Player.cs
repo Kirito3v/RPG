@@ -66,7 +66,8 @@ public class Player : Entity
         
         stateMachine.currnentState.Update();
 
-        Dash();
+        dashCooldownTime -= Time.deltaTime;
+        //Dash();
     }
 
     public async UniTaskVoid BusyFor(float sec)
@@ -78,14 +79,14 @@ public class Player : Entity
         isBusy = false;
     }
 
-    void Dash() 
+    public void Dash() 
     {
         if (isWallDetected())
             return;
 
-        dashCooldownTime -= Time.deltaTime;
+        //dashCooldownTime -= Time.deltaTime;
 
-        if (/*Input.GetKeyDown(KeyCode.LeftShift)*/ inputManager.dash.IsPressed() && dashCooldownTime < 0)
+        if (/*Input.GetKeyDown(KeyCode.LeftShift)*/ /*inputManager.dash.WasPressedThisFrame() &&*/ dashCooldownTime < 0)
         {
             dashCooldownTime = dashCooldown;
             
