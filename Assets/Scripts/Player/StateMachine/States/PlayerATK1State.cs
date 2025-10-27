@@ -29,14 +29,14 @@ public class PlayerATK1State : PlayerState
 
         player.SetVelocity(player.attackMovement[comboCounter].x * atkDir, player.attackMovement[comboCounter].y);
 
-        stateTimer = 0.1f;
+        stateTimer = 0.05f;
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        player.BusyFor(0.15f).Forget();
+        player.BusyFor(0.1f).Forget();
 
         comboCounter++;
         lastTimeAttacked = Time.time;

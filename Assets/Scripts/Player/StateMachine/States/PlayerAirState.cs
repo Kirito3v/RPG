@@ -25,7 +25,7 @@ public class PlayerAirState : PlayerState
         if (player.isWallDetected())
             playerSM.ChangeState(player.slideState);
 
-        if (player.isGroundDetected())
+        if (player.isGroundDetected() && rb.velocity.y <= 0)
             playerSM.ChangeState(player.idleState);
 
         if (/*xInput*/ inputManager.GetMovingReading().x != 0)
