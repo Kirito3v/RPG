@@ -9,7 +9,7 @@ public class PlayerATK1State : PlayerState
     private float lastTimeAttacked;
     private float comboWindow = 2;
 
-    public PlayerATK1State(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerATK1State(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
@@ -47,10 +47,10 @@ public class PlayerATK1State : PlayerState
         base.Update();
 
         if (stateTimer < 0)
-            player.ZeroVelocity();
+            player.SetZeroVelocity();
 
         if (triggerCalled)
-            playerSM.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState);
     }
 
     public override void AnimationFinishTrigger()

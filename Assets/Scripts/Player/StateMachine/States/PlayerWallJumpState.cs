@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerWallJumpState : PlayerState
 {
-    public PlayerWallJumpState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerWallJumpState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
@@ -26,9 +26,9 @@ public class PlayerWallJumpState : PlayerState
         base.Update();
 
         if (stateTimer < 0)
-            playerSM.ChangeState(player.airState);
+            stateMachine.ChangeState(player.airState);
 
         if (player.isGroundDetected())
-            playerSM.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState);
     }
 }

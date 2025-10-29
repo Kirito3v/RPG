@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerState
 {
-    protected PlayerStateMachine playerSM;
+    protected PlayerStateMachine stateMachine;
     protected InputManager inputManager;
     protected Player player;
 
@@ -17,11 +17,11 @@ public class PlayerState
     protected float stateTimer;
     protected bool triggerCalled;
 
-    public PlayerState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName)
+    public PlayerState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName)
     {
         this.player = _player;
         this.inputManager = _inputManager;
-        this.playerSM = _playerSM;
+        this.stateMachine = _stateMachine;
         this.animBoolName = _animBoolName;
     }
 

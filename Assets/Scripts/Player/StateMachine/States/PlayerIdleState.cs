@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerGroundState
 {
-    public PlayerIdleState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerIdleState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
@@ -12,7 +12,7 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.Enter();
 
-        player.ZeroVelocity();
+        player.SetZeroVelocity();
     }
 
     public override void Exit()
@@ -28,6 +28,6 @@ public class PlayerIdleState : PlayerGroundState
             return;
 
         if (/*xInput*/ inputManager.GetMovingReading().x != 0 && !player.isBusy)
-            playerSM.ChangeState(player.moveState);
+            stateMachine.ChangeState(player.moveState);
     }
 }

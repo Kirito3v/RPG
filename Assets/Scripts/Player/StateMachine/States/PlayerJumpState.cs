@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerAirState
 {
-    public PlayerJumpState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerJumpState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
@@ -27,6 +27,6 @@ public class PlayerJumpState : PlayerAirState
         
 
         if (rb.velocity.y < 0)
-            playerSM.ChangeState(player.airState);
+            stateMachine.ChangeState(player.airState);
     }
 }

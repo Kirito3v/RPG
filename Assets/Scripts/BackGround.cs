@@ -12,13 +12,13 @@ public class BackGround : MonoBehaviour
     private float length;
     void Start()
     {
-        cam = GameObject.Find("Main Camera");
+        cam = GameManager.Instance.camera;
 
         length = GetComponent<SpriteRenderer>().bounds.size.x;
         xPos = transform.position.x;
     }
 
-    void Update()
+    void LateUpdate()
     {
         float distanceMoved = cam.transform.position.x * (1 - parallaxEffect);
         float distanceToMove = cam.transform.position.x * parallaxEffect;

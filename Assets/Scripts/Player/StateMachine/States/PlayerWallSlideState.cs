@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class PlayerWallSlideState : PlayerState
 {
-    public PlayerWallSlideState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerWallSlideState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
-        inputManager.RegisterToJump(inputManager.wallSlideJump);
+        inputManager.RegisterToJump(inputManager.WallSlideJump);
     }
 
     public override void Exit()
     {
         base.Exit();
-        inputManager.UnRegisterToJump(inputManager.wallSlideJump);
+        inputManager.UnRegisterToJump(inputManager.WallSlideJump);
     }
 
     public override void Update()
@@ -36,9 +36,9 @@ public class PlayerWallSlideState : PlayerState
             rb.velocity = new Vector2(0, rb.velocity.y * 0.7f);
 
         if (/*xInput*/ inputManager.GetMovingReading().x != 0 && player.facingDir != /*xInput*/ inputManager.GetMovingReading().x)
-            playerSM.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState);
 
         if (player.isGroundDetected() || !player.isWallDetected())
-            playerSM.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState);
     }
 }

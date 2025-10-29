@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerDashState : PlayerState
 {
-    public PlayerDashState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerDashState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
@@ -28,11 +28,11 @@ public class PlayerDashState : PlayerState
         base.Update();
 
         if (!player.isGroundDetected() && player.isWallDetected())
-            playerSM.ChangeState(player.slideState);
+            stateMachine.ChangeState(player.slideState);
 
         player.SetVelocity(player.dashSpeed * player.dashDir, 0);
 
         if (stateTimer < 0)
-            playerSM.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState);
     }
 }

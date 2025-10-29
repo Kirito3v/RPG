@@ -12,6 +12,7 @@ public class InputManager : InputEventHandler
     public InputAction jump;
     public InputAction attack;
     public InputAction dash;
+    public InputAction counterAttack;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class InputManager : InputEventHandler
         jump = actions.Player.Jump;
         attack = actions.Player.ATK;
         dash = actions.Player.Dash;
+        counterAttack = actions.Player.CounterAttack;
     }
 
     private void OnEnable()
@@ -29,6 +31,7 @@ public class InputManager : InputEventHandler
         jump.Enable();
         attack.Enable();
         dash.Enable();
+        counterAttack.Enable();
     }
 
     private void OnDisable()
@@ -37,6 +40,7 @@ public class InputManager : InputEventHandler
         jump.Disable();
         attack.Disable();
         dash.Disable();
+        counterAttack.Disable();
     }
 
     #region Input Events
@@ -48,6 +52,9 @@ public class InputManager : InputEventHandler
 
     public void RegisterToDash(Action<InputAction.CallbackContext> action) => dash.performed += action;
     public void UnRegisterToDash(Action<InputAction.CallbackContext> action) => dash.performed -= action;
+
+    public void RegisterToCounterAttack(Action<InputAction.CallbackContext> action) => counterAttack.performed += action;
+    public void UnRegisterToCounterAttack(Action<InputAction.CallbackContext> action) => counterAttack.performed -= action;
     #endregion
 
     public Vector2 GetMovingReading() => move.ReadValue<Vector2>();

@@ -6,10 +6,10 @@ using System;
 public class Player : Entity
 {
     private InputManager inputManager;
-    public bool isBusy { get; private set; }
 
     [Header("Attack info")]
     public Vector2[] attackMovement;
+    public float counterAttackDuration = 0.2f;
 
     [Header("Movement info")]
     public float moveSpeed;
@@ -32,6 +32,7 @@ public class Player : Entity
     public PlayerWallSlideState slideState  { get; private set; }
     public PlayerWallJumpState wallJumpState { get; private set; }
     public PlayerATK1State ATK1State { get; private set; }
+    public PlayerCounterAttackState counterAttackState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -50,6 +51,7 @@ public class Player : Entity
         slideState = new PlayerWallSlideState(this, inputManager, stateMachine, "WallSlide");
         wallJumpState = new PlayerWallJumpState(this, inputManager, stateMachine, "Jump");
         ATK1State = new PlayerATK1State(this, inputManager, stateMachine, "Attack");
+        counterAttackState = new PlayerCounterAttackState(this, inputManager, stateMachine, "CounterAttack");
         #endregion
     }
 
@@ -68,15 +70,6 @@ public class Player : Entity
 
         dashCooldownTime -= Time.deltaTime;
         //Dash();
-    }
-
-    public async UniTaskVoid BusyFor(float sec)
-    {
-        isBusy = true;
-
-        await UniTask.Delay(TimeSpan.FromSeconds(sec));
-
-        isBusy = false;
     }
 
     public void Dash() 

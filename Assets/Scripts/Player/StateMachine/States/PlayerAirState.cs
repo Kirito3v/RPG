@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAirState : PlayerState
 {
-    public PlayerAirState(Player _player, InputManager _inputManager, PlayerStateMachine _playerSM, string _animBoolName) : base(_player, _inputManager, _playerSM, _animBoolName)
+    public PlayerAirState(Player _player, InputManager _inputManager, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _inputManager, _stateMachine, _animBoolName)
     {
     }
 
@@ -23,10 +23,10 @@ public class PlayerAirState : PlayerState
         base.Update();
 
         if (player.isWallDetected())
-            playerSM.ChangeState(player.slideState);
+            stateMachine.ChangeState(player.slideState);
 
         if (player.isGroundDetected() && rb.velocity.y <= 0)
-            playerSM.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.idleState);
 
         if (/*xInput*/ inputManager.GetMovingReading().x != 0)
             player.SetVelocity(player.moveSpeed * 0.8f * /*xInput*/ inputManager.GetMovingReading().x, rb.velocity.y);
