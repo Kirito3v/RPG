@@ -34,6 +34,7 @@ public class Player : Entity
     public PlayerWallJumpState wallJumpState { get; private set; }
     public PlayerATK1State ATK1State { get; private set; }
     public PlayerCounterAttackState counterAttackState { get; private set; }
+    public PlayerDeadState deadState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -53,6 +54,7 @@ public class Player : Entity
         wallJumpState = new PlayerWallJumpState(this, inputManager, stateMachine, "Jump");
         ATK1State = new PlayerATK1State(this, inputManager, stateMachine, "Attack");
         counterAttackState = new PlayerCounterAttackState(this, inputManager, stateMachine, "CounterAttack");
+        deadState = new PlayerDeadState(this, inputManager, stateMachine, "Die");
         #endregion
     }
 

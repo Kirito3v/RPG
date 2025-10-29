@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public GameObject camera;
+    public new GameObject camera;
 
     private void Awake()
     {
