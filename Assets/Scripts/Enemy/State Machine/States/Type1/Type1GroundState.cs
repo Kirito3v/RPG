@@ -16,7 +16,7 @@ public class Type1GroundState : EnemyState
     {
         base.Enter();
 
-        player = GameManager.Instance.player.transform;
+        player = PlayerManager.Instance.player.transform;
     }
 
     public override void Update()

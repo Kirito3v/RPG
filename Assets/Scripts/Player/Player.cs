@@ -6,6 +6,7 @@ using System;
 public class Player : Entity
 {
     private InputManager inputManager;
+    public SkillManager skill {  get; private set; }
 
     [Header("Attack info")]
     public Vector2[] attackMovement;
@@ -58,6 +59,8 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
+
+        skill = SkillManager.Instance;
 
         stateMachine.Init(idleState);
     }

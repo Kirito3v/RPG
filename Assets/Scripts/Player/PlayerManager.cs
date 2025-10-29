@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
-    public static GameManager Instance;
-    public GameObject camera;
+    public static PlayerManager Instance;
+    public Player player;
 
     private void Awake()
     {
         Instance = Instance == null ? this : DestroyAndReturnNull();
     }
 
-    private GameManager DestroyAndReturnNull()
+    private PlayerManager DestroyAndReturnNull()
     {
         Destroy(gameObject);
         return null;
