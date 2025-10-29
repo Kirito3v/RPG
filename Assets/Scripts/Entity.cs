@@ -9,8 +9,8 @@ public class Entity : MonoBehaviour
     #region Components
     public Rigidbody2D rb { get; private set; }
     public Animator anim { get; private set; }
-
     public EntityFX fx { get; private set; }
+    public EntityStats stats { get; private set; }
     #endregion
 
     public int facingDir = 1;
@@ -43,6 +43,7 @@ public class Entity : MonoBehaviour
         fx = GetComponent<EntityFX>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
+        stats = GetComponent<EntityStats>();
     }
 
     protected virtual void Update()
@@ -59,8 +60,8 @@ public class Entity : MonoBehaviour
         isBusy = false;
     }
 
-    #region Damage
-    public virtual void Damage() 
+    #region Damage Impact
+    public virtual void DamageEffects() 
     {
         fx.FlashFX().Forget();
         HitKnockback().Forget();

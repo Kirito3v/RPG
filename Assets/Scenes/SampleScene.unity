@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 142607078}
   - component: {fileID: 142607084}
   - component: {fileID: 142607085}
+  - component: {fileID: 142607086}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -215,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facingDir: 1
-  knockbackDir: {x: 3, y: 6}
+  knockbackDir: {x: 5, y: 3}
   knockbackDuration: 0.07
   attackCheck: {fileID: 1712745333}
   attackCheckRadius: 0.8
@@ -418,6 +419,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMat: {fileID: 2100000, guid: c03f6bcba6ddb6149bbcd5f2c14dac49, type: 2}
   flashDuration: 0.2
+--- !u!114 &142607086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142607077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b01dafbad35b8bd44a959730e5a41f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth:
+    baseValue: 100
+    modifiers: 
+  strength:
+    baseValue: 5
+    modifiers: 
+  damage:
+    baseValue: 10
+    modifiers: 
 --- !u!1 &362279811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1432,6 +1454,7 @@ GameObject:
   - component: {fileID: 981202210}
   - component: {fileID: 981202209}
   - component: {fileID: 981202212}
+  - component: {fileID: 981202213}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -1472,8 +1495,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facingDir: 1
-  knockbackDir: {x: 7, y: 12}
-  knockbackDuration: 0.07
+  knockbackDir: {x: 7, y: 5}
+  knockbackDuration: 0.5
   attackCheck: {fileID: 1863265530}
   attackCheckRadius: 0.8
   groundCheck: {fileID: 1429685530}
@@ -1572,6 +1595,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMat: {fileID: 2100000, guid: c03f6bcba6ddb6149bbcd5f2c14dac49, type: 2}
   flashDuration: 0.2
+--- !u!114 &981202213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981202207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 788d6905b67026849ac82301bda44cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth:
+    baseValue: 100
+    modifiers: 
+  strength:
+    baseValue: 2
+    modifiers: 
+  damage:
+    baseValue: 10
+    modifiers: 
 --- !u!1 &1011343834
 GameObject:
   m_ObjectHideFlags: 0

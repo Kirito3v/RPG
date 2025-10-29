@@ -16,7 +16,13 @@ public class EnemyAnimEvents : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(enemy.attackCheck.position, enemy.attackCheckRadius);
 
         foreach (var hit in colliders)
-            hit.GetComponent<Player>()?.Damage();
+        {
+            if (hit.GetComponent<Player>() != null)
+            {
+                PlayerStats entity = hit.GetComponent<PlayerStats>();
+                enemy.stats.DoDamage(entity);
+            }
+        }
     }
 
     private void OpenCounterAttackWindow() => enemy.OpenCounterAttackWindow();
