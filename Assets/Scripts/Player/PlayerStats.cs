@@ -17,6 +17,13 @@ public class PlayerStats : EntityStats
     {
         base.TakeDamage(dmg);
 
-        player.DamageEffects();
+        player.DamageImpact();
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+
+        player.Die();
     }
 }

@@ -30,13 +30,14 @@ public class PlayerWallSlideState : PlayerState
         //    return;
         //}
 
+        if (/*xInput*/ inputManager.GetMovingReading().x != 0 && player.facingDir != /*xInput*/ inputManager.GetMovingReading().x)
+            stateMachine.ChangeState(player.idleState);
+
         if (/*yInput*/ inputManager.GetMovingReading().y < 0)
             rb.velocity = new Vector2(0, rb.velocity.y);
         else    
             rb.velocity = new Vector2(0, rb.velocity.y * 0.7f);
 
-        if (/*xInput*/ inputManager.GetMovingReading().x != 0 && player.facingDir != /*xInput*/ inputManager.GetMovingReading().x)
-            stateMachine.ChangeState(player.idleState);
 
         if (player.isGroundDetected() || !player.isWallDetected())
             stateMachine.ChangeState(player.idleState);

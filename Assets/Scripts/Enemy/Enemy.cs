@@ -23,12 +23,13 @@ public class Enemy : Entity
     public float attackCooldown;
     [HideInInspector] public float lastTimeAttacked;
 
-    public EnemyStateMachine StateMachine;
+    public EnemyStateMachine stateMachine {  get; protected set; }
+    public string lastAnimBoolName {  get; protected set; }
 
     protected override void Awake()
     {
         base.Awake();
-        StateMachine = new EnemyStateMachine();
+        stateMachine = new EnemyStateMachine();
     }
 
     protected override void Start()
@@ -40,8 +41,10 @@ public class Enemy : Entity
     {
         base.Update();
 
-        StateMachine.currnentState.Update();
+        stateMachine.currnentState.Update();
     }
+
+    public virtual void AssignLastAnimName(string animName) => lastAnimBoolName = animName;
 
     public virtual bool CanBeStunned()
     {
@@ -65,7 +68,7 @@ public class Enemy : Entity
         counterImg.SetActive(false);
     }
 
-    public void AnimationTrigger() => StateMachine.currnentState.AnimationFinishTrigger();
+    public void AnimationTrigger() => stateMachine.currnentState.AnimationFinishTrigger();
 
     public virtual RaycastHit2D IsPLayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, watIsPlayer);
 

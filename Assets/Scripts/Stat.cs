@@ -20,6 +20,8 @@ public class Stat
         return finalValue;
     }
 
+    public int SetDefaultValue(int value) => baseValue = value;
+
     public void AddModifier(int mod) => modifiers.Add(mod);
 
     public void RemoveModifier(int mod) => modifiers.RemoveAt(mod);

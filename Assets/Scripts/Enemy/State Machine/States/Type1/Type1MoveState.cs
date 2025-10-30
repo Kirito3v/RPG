@@ -22,7 +22,7 @@ public class Type1MoveState : Type1GroundState
         if (enemy.isWallDetected() || !enemy.isGroundDetected()) 
         {
             enemy.Flip();
-            stateMachine.ChangeState(enemy.IdleState);
+            stateMachine.ChangeState(enemy.idleState);
         }
     }
 

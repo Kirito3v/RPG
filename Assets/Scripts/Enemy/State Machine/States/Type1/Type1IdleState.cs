@@ -20,7 +20,7 @@ public class Type1IdleState : Type1GroundState
         base.Update();
 
         if (stateTimer < 0)
-            stateMachine.ChangeState(enemy.MoveState);
+            stateMachine.ChangeState(enemy.moveState);
     }
 
     public override void Exit()

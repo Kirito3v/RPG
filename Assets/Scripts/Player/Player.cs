@@ -77,6 +77,13 @@ public class Player : Entity
         //Dash();
     }
 
+    public override void Die()
+    {
+        base.Die();
+
+        stateMachine.ChangeState(deadState);
+    }
+
     public void Dash() 
     {
         if (isWallDetected())

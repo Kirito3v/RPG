@@ -11,10 +11,8 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public EntityFX fx { get; private set; }
     public EntityStats stats { get; private set; }
+    public CapsuleCollider2D cd { get; private set; }
     #endregion
-
-    public int facingDir = 1;
-    protected bool facingRight = true;
 
     [Header("Knockback info")]
     [SerializeField] protected Vector2 knockbackDir;
@@ -33,6 +31,11 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance;
 
+    public int facingDir = 1;
+    protected bool facingRight = true;
+
+    public Action OnFlipped;
+
     protected virtual void Awake() 
     {
 
@@ -44,6 +47,7 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stats = GetComponent<EntityStats>();
+        cd = GetComponent<CapsuleCollider2D>();
     }
 
     protected virtual void Update()
@@ -61,12 +65,7 @@ public class Entity : MonoBehaviour
     }
 
     #region Damage Impact
-    public virtual void DamageEffects() 
-    {
-        fx.FlashFX().Forget();
-        HitKnockback().Forget();
-        Debug.Log(gameObject.name + " AAAh");
-    }
+    public virtual void DamageImpact() => HitKnockback().Forget();
 
     protected virtual async UniTask HitKnockback() 
     {
@@ -78,6 +77,11 @@ public class Entity : MonoBehaviour
 
         isKnocked = false;
     }
+
+    public virtual void Die()
+    {
+
+    }
     #endregion
 
     #region Flip
@@ -86,6 +90,9 @@ public class Entity : MonoBehaviour
         facingDir = facingDir * -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+
+        if (OnFlipped != null)
+            OnFlipped();
     }
 
     protected virtual void FlipCtrl(float x)

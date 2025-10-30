@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Type1AttackState : EnemyState
+public class Type1AttackState : Type1State
 {
-    private EnemyType1 enemy;
-    public Type1AttackState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, EnemyType1 _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public Type1AttackState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, EnemyType1 _enemy) : base(_enemyBase, _stateMachine, _animBoolName, _enemy)
     {
-        enemy = _enemy;
     }
 
     public override void Enter()
@@ -22,7 +20,7 @@ public class Type1AttackState : EnemyState
         enemy.SetZeroVelocity();
 
         if (triggerCalled)
-            stateMachine.ChangeState(enemy.BattleState);
+            stateMachine.ChangeState(enemy.battleState);
     }
 
     public override void Exit()
