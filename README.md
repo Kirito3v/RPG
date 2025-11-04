@@ -4,11 +4,15 @@
 I try to code some common systems for any RPG games.
 
 **Done**
-- Player controller (state machine with new input system and Unitask)
+- Player controller
+- Level System
+- Enemy AI
+- Stats
+- Inventory
 
 **Yet to come**
-- Inventory  
-- Dialog  
-- Enemy AI  
-- Stats  
+- Dialog   
 - Skill tree
+- Save & Load
+- Audio Manager
+- Some UI and Graphic Settings
