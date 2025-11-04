@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyType1 : Enemy
 {
+    public int expOnDeath { get; protected set; } = 20;
+
     #region States
     public Type1StunnedState stunnedState {  get; private set; }
     public Type1GroundState groundState {  get; protected set; }

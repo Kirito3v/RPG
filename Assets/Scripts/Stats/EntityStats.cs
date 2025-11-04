@@ -41,13 +41,14 @@ public class EntityStats : MonoBehaviour
 
         totaldamage = CheckArmor(entity, totaldamage);
         entity.TakeDamage(totaldamage);
+
+        Debug.Log(GetComponent<Entity>().name + $" Deal {totaldamage}");
     }
 
     public virtual void TakeDamage(int dmg)
     {
         DecreaseHealthBy(dmg);
 
-        Debug.Log(GetComponent<Entity>().name + $" Deal {dmg}");
         GetComponent<Entity>().fx.FlashFX().Forget();
 
         if (currentHealth <= 0)

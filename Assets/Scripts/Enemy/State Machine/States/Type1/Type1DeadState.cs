@@ -12,6 +12,8 @@ public class Type1DeadState : Type1State
     {
         base.Enter();
 
+        ExpManager.Instance.AddExp(enemy.expOnDeath);
+
         enemy.anim.SetBool(enemy.lastAnimBoolName, true);
         enemy.anim.speed = 0;
         enemy.cd.enabled = false;

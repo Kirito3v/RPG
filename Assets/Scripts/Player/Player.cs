@@ -74,6 +74,7 @@ public class Player : Entity
         stateMachine.currnentState.Update();
 
         dashCooldownTime -= Time.deltaTime;
+
         //Dash();
     }
 
