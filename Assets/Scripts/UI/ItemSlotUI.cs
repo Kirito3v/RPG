@@ -1,26 +1,27 @@
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
-public class ItemSlotUI : MonoBehaviour
+public class ItemSlotUI : MonoBehaviour, IPointerDownHandler
 {
-    //[SerializeField] private Image imgBG;
-    //[SerializeField] private Image imgFG;
-
     [SerializeField] private Image itemImage;
     [SerializeField] private TextMeshProUGUI itemText;
     
-    
     [SerializeField] private InventoryItem item;
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (item.itemData.itemType == ItemType.Equipment)
+            Inventory.Instance.EquipItem(item.itemData);
+    }
 
     public void UpdateSlot(InventoryItem newitem)
     {
         item = newitem;
 
-        //imgBG.enabled = true;
-        //imgFG.enabled = true;
-        //itemImage.enabled = true;
-        //itemText.enabled = true;
+        itemImage.color = Color.white;
 
         if (item != null)
         {
@@ -32,4 +33,6 @@ public class ItemSlotUI : MonoBehaviour
                 itemText.text = string.Empty;
         }
     }
+
+    public InventoryItem GetItem() => item;
 }

@@ -56,6 +56,7 @@ public class ExpManager : MonoBehaviour
         CheckLvlUp(currentExp);
         UpdateExpUI();
     }
+
     private void CheckLvlUp(int exp)
     {
         while (exp >= expToNextLvl)
