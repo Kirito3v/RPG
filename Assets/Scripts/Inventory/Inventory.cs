@@ -220,9 +220,9 @@ public class Inventory : MonoBehaviour
             if (slot != null && slot.GetItem() == itemToRemove)
                 slotPool.Release(slot.gameObject);
 
-        foreach (ItemSlotUI slot in stashItemSlot)
-            if (slot != null && slot.GetItem() == itemToRemove)
-                slotPool.Release(slot.gameObject);
+        //foreach (ItemSlotUI slot in stashItemSlot)
+        //    if (slot != null && slot.GetItem() == itemToRemove)
+        //        slotPool.Release(slot.gameObject);
     }
 
     private void InitializePools()
