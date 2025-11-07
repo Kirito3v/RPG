@@ -835,7 +835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 15
+    baseValue: 30
     modifiers: 
   agility:
     baseValue: 5
@@ -850,7 +850,7 @@ MonoBehaviour:
     baseValue: 20
     modifiers: 
   critChance:
-    baseValue: 40
+    baseValue: 60
     modifiers: 
   critDamage:
     baseValue: 0
