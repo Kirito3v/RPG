@@ -11,7 +11,7 @@ I try to code some common systems for any RPG games.
 - Inventory
 
 **Yet to come**
-- Dialog   
+- Dialog + Quest system
 - Skill tree
 - Save & Load
 - Audio Manager
