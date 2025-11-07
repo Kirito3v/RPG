@@ -34,5 +34,14 @@ public class ItemSlotUI : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    public void ClearSlot()
+    {
+        item = null;
+
+        itemImage.sprite = null;
+        itemImage.color = Color.clear;
+        itemText.text = string.Empty;
+    }
+
     public InventoryItem GetItem() => item;
 }

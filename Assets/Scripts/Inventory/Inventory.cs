@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
@@ -9,14 +7,14 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
 
-    public List<InventoryItem> equipment;
-    public Dictionary<ItemDataEquipment, InventoryItem> equipmentDict;
+    public List<InventoryItem> equipment = new();
+    public Dictionary<ItemDataEquipment, InventoryItem> equipmentDict = new();
 
-    public List<InventoryItem> inventory;
-    public Dictionary<ItemData, InventoryItem> inventoryDict;
+    public List<InventoryItem> inventory = new();
+    public Dictionary<ItemData, InventoryItem> inventoryDict = new();
 
-    public List<InventoryItem> stash;
-    public Dictionary<ItemData, InventoryItem> stashDict;
+    public List<InventoryItem> stash = new();
+    public Dictionary<ItemData, InventoryItem> stashDict = new();
 
     [Header("Inventory UI")]
     [SerializeField] private Transform inventorySlotRoot;
@@ -26,8 +24,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject itemSlotPrefab;
 
     private ObjectPool<GameObject> slotPool;
-    private ItemSlotUI[] inventoryItemSlot;
-    private ItemSlotUI[] stashItemSlot;
     private EquipmentSlotUI[] equipmentSlot;
 
     private void Awake()
@@ -39,17 +35,8 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        equipment = new List<InventoryItem>();
-        equipmentDict = new Dictionary<ItemDataEquipment, InventoryItem>();
-
-        inventory = new List<InventoryItem>();
-        inventoryDict = new Dictionary<ItemData, InventoryItem>();
-
-        stash = new List<InventoryItem>();
-        stashDict = new Dictionary<ItemData, InventoryItem>();
-
-        //itemSlot = inventorySlotRoot.GetComponentsInChildren<ItemSlotUI>();
         equipmentSlot = equipmentSlotRoot.GetComponentsInChildren<EquipmentSlotUI>();
+        UpdateUI();
     }
 
     private Inventory DestroyAndReturnNull()
@@ -58,31 +45,37 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
+    #region Inventory Management
     public void EquipItem(ItemData _item)
     {
-        ItemDataEquipment newEquipment = _item as ItemDataEquipment;
-        InventoryItem newItem = new InventoryItem(newEquipment);
+        if (_item is not ItemDataEquipment newEquipment)
+            return;
 
+        InventoryItem newItem = new(newEquipment);
         ItemDataEquipment oldEquipment = null;
 
-        foreach (KeyValuePair<ItemDataEquipment, InventoryItem> item in equipmentDict)
+        // Find existing equipment of same type
+        foreach (var kvp in equipmentDict)
         {
-            if (item.Key.equipmentType == newEquipment.equipmentType)
-                oldEquipment = item.Key;
+            if (kvp.Key.equipmentType == newEquipment.equipmentType)
+            {
+                oldEquipment = kvp.Key;
+                break;
+            }
         }
 
+        // Swap old equipment
         if (oldEquipment != null)
         {
             UnEquip(oldEquipment);
             AddItem(oldEquipment);
         }
 
-
         equipment.Add(newItem);
-        equipmentDict.Add(newEquipment, newItem);
-        RemoveItem(_item);
+        equipmentDict[newEquipment] = newItem;
 
-        UpdateUI(newItem);
+        RemoveItem(_item);
+        UpdateUI();
     }
 
     private void UnEquip(ItemDataEquipment itemToRemove)
@@ -96,11 +89,17 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(ItemData item)
     {
-        if (item.itemType == ItemType.Equipment)
-            AddToInventory(item);
-        else if (item.itemType == ItemType.Material)
-            AddToStash(item);
-        UpdateUI(null);
+        switch (item.itemType)
+        {
+            case ItemType.Equipment:
+                AddToInventory(item);
+                break;
+            case ItemType.Material:
+                AddToStash(item);
+                break;
+        }
+
+        UpdateUI();
     }
 
     private void AddToStash(ItemData item)
@@ -109,9 +108,9 @@ public class Inventory : MonoBehaviour
             value.AddStack();
         else
         {
-            InventoryItem newItem = new InventoryItem(item);
+            InventoryItem newItem = new(item);
             stash.Add(newItem);
-            stashDict.Add(item, newItem);
+            stashDict[item] = newItem;
         }
     }
 
@@ -121,108 +120,95 @@ public class Inventory : MonoBehaviour
             value.AddStack();
         else
         {
-            InventoryItem newItem = new InventoryItem(item);
+            InventoryItem newItem = new(item);
             inventory.Add(newItem);
-            inventoryDict.Add(item, newItem);
+            inventoryDict[item] = newItem;
         }
     }
 
     public void RemoveItem(ItemData item)
     {
-        if (inventoryDict.TryGetValue(item, out InventoryItem value))
+        if (inventoryDict.TryGetValue(item, out InventoryItem inv))
         {
-            if (value.stackSize <= 1)
+            if (inv.stackSize <= 1)
             {
-                inventory.Remove(value);
+                inventory.Remove(inv);
                 inventoryDict.Remove(item);
             }
-            else
-                value.RemoveStack();
+            else inv.RemoveStack();
         }
 
-        if (stashDict.TryGetValue(item, out InventoryItem stashValue))
+        if (stashDict.TryGetValue(item, out InventoryItem stashVal))
         {
-            if (stashValue.stackSize <= 1)
+            if (stashVal.stackSize <= 1)
             {
-                stash.Remove(stashValue);
+                stash.Remove(stashVal);
                 stashDict.Remove(item);
             }
-            else
-                stashValue.RemoveStack();
+            else stashVal.RemoveStack();
         }
 
-        UpdateUI(null);
+        UpdateUI();
     }
+    #endregion
 
-    private void UpdateUI(InventoryItem itemToRemove)
+    #region UI Management
+    private void UpdateUI()
     {
-        UpdateSlotUI(itemToRemove);
+        ClearSlotUI();
+        UpdateEquipmentUI();
+        UpdateInventoryUI();
+        UpdateStashUI();
+
         Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryScroll.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryScroll);
     }
 
-    private void UpdateSlotUI(InventoryItem itemToRemove = null)
+    private void UpdateEquipmentUI()
     {
-        for (int i = 0; i < equipmentSlot.Length; i++)
+        foreach (var slot in equipmentSlot)
         {
-            foreach (KeyValuePair<ItemDataEquipment, InventoryItem> item in equipmentDict)
+            slot.ClearSlot();
+            foreach (var kvp in equipmentDict)
             {
-                if (item.Key.equipmentType == equipmentSlot[i].slotType)
-                    equipmentSlot[i].UpdateSlot(item.Value);
+                if (kvp.Key.equipmentType == slot.slotType)
+                {
+                    slot.UpdateSlot(kvp.Value);
+                    break;
+                }
             }
         }
+    }
 
-        RemoveEquipmentUI(itemToRemove);
-
-        inventoryItemSlot = inventorySlotRoot.GetComponentsInChildren<ItemSlotUI>();
-        stashItemSlot = stashSlotRoot.GetComponentsInChildren<ItemSlotUI>();
-        
-        ClearSlotUI();
-
-        for (int i = 0; i < inventory.Count; i++)
+    private void UpdateInventoryUI()
+    {
+        foreach (var item in inventory)
         {
             GameObject s = slotPool.Get();
             s.transform.SetParent(inventorySlotRoot, false);
-            ItemSlotUI slot = s.GetComponentInChildren<ItemSlotUI>();
-            slot.UpdateSlot(inventory[i]);
+            var slot = s.GetComponentInChildren<ItemSlotUI>();
+            slot.UpdateSlot(item);
         }
+    }
 
-        for (int i = 0; i < stash.Count; i++)
+    private void UpdateStashUI()
+    {
+        foreach (var item in stash)
         {
             GameObject s = slotPool.Get();
             s.transform.SetParent(stashSlotRoot, false);
-            ItemSlotUI slot = s.GetComponentInChildren<ItemSlotUI>();
-            slot.UpdateSlot(stash[i]);
+            var slot = s.GetComponentInChildren<ItemSlotUI>();
+            slot.UpdateSlot(item);
         }
-
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryScroll.GetComponent<RectTransform>());
     }
 
     private void ClearSlotUI()
     {
-        foreach (Transform slot in inventorySlotRoot)
-            slotPool.Release(slot.gameObject);
+        foreach (Transform child in inventorySlotRoot)
+            slotPool.Release(child.gameObject);
 
-        foreach (Transform slot in stashSlotRoot)
-            slotPool.Release(slot.gameObject);
-    }
-
-    private void RemoveEquipmentUI(InventoryItem itemToRemove)
-    {
-        if (itemToRemove == null)
-            return;
-
-        inventoryItemSlot = inventorySlotRoot.GetComponentsInChildren<ItemSlotUI>();
-        stashItemSlot = stashSlotRoot.GetComponentsInChildren<ItemSlotUI>();
-
-        foreach (ItemSlotUI slot in inventoryItemSlot)
-            if (slot != null && slot.GetItem() == itemToRemove)
-                slotPool.Release(slot.gameObject);
-
-        //foreach (ItemSlotUI slot in stashItemSlot)
-        //    if (slot != null && slot.GetItem() == itemToRemove)
-        //        slotPool.Release(slot.gameObject);
+        foreach (Transform child in stashSlotRoot)
+            slotPool.Release(child.gameObject);
     }
 
     private void InitializePools()
@@ -234,12 +220,13 @@ public class Inventory : MonoBehaviour
                 obj.SetActive(false);
                 return obj;
             },
-            actionOnGet: (obj) => obj.SetActive(true),
-            actionOnRelease: (obj) => obj.SetActive(false),
-            actionOnDestroy: (obj) => Destroy(obj),
+            actionOnGet: obj => obj.SetActive(true),
+            actionOnRelease: obj => obj.SetActive(false),
+            actionOnDestroy: obj => Destroy(obj),
             collectionCheck: false,
             defaultCapacity: 20,
             maxSize: 100
         );
     }
+    #endregion
 }
