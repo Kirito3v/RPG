@@ -24,5 +24,5 @@ public class Stat
 
     public void AddModifier(int mod) => modifiers.Add(mod);
 
-    public void RemoveModifier(int mod) => modifiers.RemoveAt(mod);
+    public void RemoveModifier(int mod) => modifiers.Remove(mod);
 }

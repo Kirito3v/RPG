@@ -23,7 +23,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private RectTransform inventoryScroll;
     [SerializeField] private GameObject itemSlotPrefab;
 
-    private ObjectPool<GameObject> slotPool;
+    private ObjectPool<GameObject> equipmentSlotPool;
+    private ObjectPool<GameObject> stashSlotPool;
     private EquipmentSlotUI[] equipmentSlot;
 
     private void Awake()
@@ -73,17 +74,19 @@ public class Inventory : MonoBehaviour
 
         equipment.Add(newItem);
         equipmentDict[newEquipment] = newItem;
+        newEquipment.AddModifiers();
 
         RemoveItem(_item);
         UpdateUI();
     }
 
-    private void UnEquip(ItemDataEquipment itemToRemove)
+    public void UnEquip(ItemDataEquipment itemToRemove)
     {
         if (equipmentDict.TryGetValue(itemToRemove, out InventoryItem value))
         {
             equipment.Remove(value);
             equipmentDict.Remove(itemToRemove);
+            itemToRemove.RemoveModifiers();
         }
     }
 
@@ -92,37 +95,49 @@ public class Inventory : MonoBehaviour
         switch (item.itemType)
         {
             case ItemType.Equipment:
-                AddToInventory(item);
+                AddItemToCollection(item, inventory, inventoryDict);
                 break;
             case ItemType.Material:
-                AddToStash(item);
+                AddItemToCollection(item, stash, stashDict);
                 break;
         }
 
         UpdateUI();
     }
 
-    private void AddToStash(ItemData item)
-    {
-        if (stashDict.TryGetValue(item, out InventoryItem value))
-            value.AddStack();
-        else
-        {
-            InventoryItem newItem = new(item);
-            stash.Add(newItem);
-            stashDict[item] = newItem;
-        }
-    }
+    //private void AddToStash(ItemData item)
+    //{
+    //    if (stashDict.TryGetValue(item, out InventoryItem value))
+    //        value.AddStack();
+    //    else
+    //    {
+    //        InventoryItem newItem = new(item);
+    //        stash.Add(newItem);
+    //        stashDict[item] = newItem;
+    //    }
+    //}
 
-    private void AddToInventory(ItemData item)
+    //private void AddToInventory(ItemData item)
+    //{
+    //    if (inventoryDict.TryGetValue(item, out InventoryItem value))
+    //        value.AddStack();
+    //    else
+    //    {
+    //        InventoryItem newItem = new(item);
+    //        inventory.Add(newItem);
+    //        inventoryDict[item] = newItem;
+    //    }
+    //}
+
+    private void AddItemToCollection<T>(T item, List<InventoryItem> list, Dictionary<T, InventoryItem> dict) where T : ItemData
     {
-        if (inventoryDict.TryGetValue(item, out InventoryItem value))
+        if (dict.TryGetValue(item, out InventoryItem value))
             value.AddStack();
         else
         {
             InventoryItem newItem = new(item);
-            inventory.Add(newItem);
-            inventoryDict[item] = newItem;
+            list.Add(newItem);
+            dict[item] = newItem;
         }
     }
 
@@ -184,10 +199,10 @@ public class Inventory : MonoBehaviour
     {
         foreach (var item in inventory)
         {
-            GameObject s = slotPool.Get();
-            s.transform.SetParent(inventorySlotRoot, false);
+            GameObject s = equipmentSlotPool.Get();
+            s?.transform.SetParent(inventorySlotRoot, false);
             var slot = s.GetComponentInChildren<ItemSlotUI>();
-            slot.UpdateSlot(item);
+            slot?.UpdateSlot(item);
         }
     }
 
@@ -195,25 +210,42 @@ public class Inventory : MonoBehaviour
     {
         foreach (var item in stash)
         {
-            GameObject s = slotPool.Get();
-            s.transform.SetParent(stashSlotRoot, false);
+            GameObject s = stashSlotPool.Get();
+            s?.transform.SetParent(stashSlotRoot, false);
             var slot = s.GetComponentInChildren<ItemSlotUI>();
-            slot.UpdateSlot(item);
+            slot?.UpdateSlot(item);
         }
     }
 
     private void ClearSlotUI()
     {
         foreach (Transform child in inventorySlotRoot)
-            slotPool.Release(child.gameObject);
+            if (child.gameObject.activeInHierarchy)
+                equipmentSlotPool.Release(child.gameObject);
 
         foreach (Transform child in stashSlotRoot)
-            slotPool.Release(child.gameObject);
+            if (child.gameObject.activeInHierarchy)
+                stashSlotPool.Release(child.gameObject);
     }
 
     private void InitializePools()
     {
-        slotPool = new ObjectPool<GameObject>(
+        equipmentSlotPool = new ObjectPool<GameObject>(
+            createFunc: () =>
+            {
+                GameObject obj = Instantiate(itemSlotPrefab);
+                obj.SetActive(false);
+                return obj;
+            },
+            actionOnGet: obj => obj.SetActive(true),
+            actionOnRelease: obj => obj.SetActive(false),
+            actionOnDestroy: obj => Destroy(obj),
+            collectionCheck: false,
+            defaultCapacity: 20,
+            maxSize: 100
+        );
+
+        stashSlotPool = new ObjectPool<GameObject>(
             createFunc: () =>
             {
                 GameObject obj = Instantiate(itemSlotPrefab);
