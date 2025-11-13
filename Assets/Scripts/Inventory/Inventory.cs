@@ -4,7 +4,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
-    private InventoryUI UI;
+    //private InventoryUI UI;
     public System.Action OnInventoryChanged;
 
     public List<InventoryItem> equipment = new();
@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        UI = InventoryUI.Instance;
+        //UI = InventoryUI.Instance;
     }
 
     private Inventory DestroyAndReturnNull()

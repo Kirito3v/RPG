@@ -13,7 +13,8 @@ public class InventoryUI : UI
     [SerializeField] private Transform inventorySlotRoot;
     [SerializeField] private Transform stashSlotRoot;
     [SerializeField] private Transform equipmentSlotRoot;
-    [SerializeField] private RectTransform inventoryScroll;
+    //[SerializeField] private RectTransform inventoryScroll;
+    //[SerializeField] private RectTransform stashScroll;
     [SerializeField] private GameObject itemSlotPrefab;
 
     private ObjectPool<GameObject> equipmentSlotPool;
@@ -65,8 +66,11 @@ public class InventoryUI : UI
         UpdateInventoryUI();
         UpdateStashUI();
 
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryScroll);
+        foreach (GameObject gameObject in Tabs)
+        {
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(gameObject.GetComponent<RectTransform>());
+        }
     }
 
     private void UpdateEquipmentUI()
