@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class ItemSlotUI : MonoBehaviour, IPointerDownHandler
 {

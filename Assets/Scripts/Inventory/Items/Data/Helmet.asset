@@ -16,3 +16,13 @@ MonoBehaviour:
   itemName: Helmet
   icon: {fileID: -862092168, guid: d8e3cba2d396bc84c81d79547e4c5281, type: 3}
   equipmentType: 1
+  strength: 0
+  agility: 0
+  intelligence: 0
+  vitality: 0
+  damage: 0
+  critChance: 0
+  critDamage: 0
+  maxHealth: 0
+  armor: 15
+  evasion: 3
