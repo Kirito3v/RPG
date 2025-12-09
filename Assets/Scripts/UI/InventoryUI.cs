@@ -17,7 +17,7 @@ public class InventoryUI : UI
     //[SerializeField] private RectTransform stashScroll;
     [SerializeField] private GameObject itemSlotPrefab;
 
-    private ObjectPool<GameObject> equipmentSlotPool;
+    private ObjectPool<GameObject> inventorySlotPool;
     private ObjectPool<GameObject> stashSlotPool;
     private EquipmentSlotUI[] equipmentSlot;
 
@@ -48,6 +48,7 @@ public class InventoryUI : UI
     public override void SwitchTo(GameObject menu)
     {
         base.SwitchTo(menu);
+
         if (menu != null)
             UpdateUI();
     }
@@ -94,7 +95,7 @@ public class InventoryUI : UI
         if (inventorySlotRoot.gameObject.activeInHierarchy)
             foreach (var item in inventory.inventory)
             {
-                GameObject s = equipmentSlotPool.Get();
+                GameObject s = inventorySlotPool.Get();
                 s?.transform.SetParent(inventorySlotRoot, false);
                 var slot = s.GetComponentInChildren<ItemSlotUI>();
                 slot?.UpdateSlot(item);
@@ -117,7 +118,7 @@ public class InventoryUI : UI
     {
         foreach (Transform child in inventorySlotRoot)
             if (child.gameObject.activeInHierarchy)
-                equipmentSlotPool.Release(child.gameObject);
+                inventorySlotPool.Release(child.gameObject);
 
         foreach (Transform child in stashSlotRoot)
             if (child.gameObject.activeInHierarchy)
@@ -126,7 +127,7 @@ public class InventoryUI : UI
 
     private void InitializePools()
     {
-        equipmentSlotPool = new ObjectPool<GameObject>(
+        inventorySlotPool = new ObjectPool<GameObject>(
             createFunc: () =>
             {
                 GameObject obj = Instantiate(itemSlotPrefab);

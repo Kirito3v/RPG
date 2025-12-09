@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ExpManager : MonoBehaviour
+public class ExpManager : MonoBehaviour, ISaveManager
 {
     [Header("UI")]
     [SerializeField] private Slider expSlider;
@@ -91,5 +91,20 @@ public class ExpManager : MonoBehaviour
                 expSlider.value = currentExp;
             }
         }
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData.exp = this.currentExp;
+        gameData.lvl = this.currentLvl;
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        this.currentExp = gameData.exp;
+        this.currentLvl = gameData.lvl;
+
+        expToNextLvl = (int)expCurve.Evaluate(currentLvl);
+        expSlider.maxValue = expToNextLvl;
     }
 }
